@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .wrap {
+      width: 500px;
+      margin: 20px 0 auto;
+      padding: 40px 20px;
+      -moz-border-radius: 4px;
+      -webkit-border-radius: 4px;
+      border-radius: 4px;
+    }
+    .shadow {
+      border: 1px solid #e6e6e6;
+      box-shadow: 0 2px 3px #ececec;
+      background: #fff;
+    }
+    .content {
+      list-style-type: none;
+    }
+    .title {
+      cursor: pointer;
+    }
+    .title:hover {
+      background-color: #393;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap shadow">
+    <ol id="content">
+      
+    </ol>
+  </div>
+
+  <script>
+    var guide = [
+      {
+        title: '表单常用的工具',
+        sublist: [
+          {
+            subtitle: '去除字符串左右的空格',
+            url: '1-1.html'
+          },
+          {
+            subtitle: '验证用户是否输入',
+            url: '1-2.html'
+          }
+        ]
+      },
+      {
+        title: '常用图片相关代码',
+        sublist: [
+          {
+            subtitle: '可放大的图片',
+            url: '2-1.html'
+          }
+        ]
+      },
+      {
+        title: '内容展示相关代码',
+        sublist: [
+          {
+            subtitle: '无刷新切换皮肤，刷新保存',
+            url: '3-1.html'
+          }
+        ]
+      }
+    ]
+    window.onload = function(e) {
+      var content = document.getElementById('content');
+      guide.forEach(function(o) {
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(o.title));
+        content.appendChild(li);
+        li.setAttribute('class', 'title');
+
+        
+        o.sublist.forEach(function(sub) {
+          var li = document.createElement('li');
+          li.appendChild(document.createTextNode(o.title));
+          content.appendChild(li);
+          li.setAttribute('class', 'title');
+        })
+      })
+    }
+  </script>
+</body>
+</html>
