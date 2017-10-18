@@ -5,31 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <style>
-    .wrap {
-      width: 500px;
-      margin: 20px 0 auto;
-      padding: 40px 20px;
-      -moz-border-radius: 4px;
-      -webkit-border-radius: 4px;
-      border-radius: 4px;
-    }
-    .shadow {
-      border: 1px solid #e6e6e6;
-      box-shadow: 0 2px 3px #ececec;
-      background: #fff;
-    }
-    .content {
-      list-style-type: none;
-    }
-    .title {
-      cursor: pointer;
-    }
-    .title:hover {
-      background-color: #393;
-      border-radius: 4px;
-    }
-  </style>
+  <link rel="stylesheet" href="./main.css">
 </head>
 <body>
   <div class="wrap shadow">
@@ -37,7 +13,6 @@
       
     </ol>
   </div>
-
   <script>
     var guide = [
       {
@@ -68,26 +43,46 @@
           {
             subtitle: '无刷新切换皮肤，刷新保存',
             url: '3-1.html'
+          },
+          {
+            subtitle: '无刷新切换皮肤，刷新保存',
+            url: '4-1.html'
           }
         ]
       }
     ]
     window.onload = function(e) {
       var content = document.getElementById('content');
+      var htmlString = ''
       guide.forEach(function(o) {
-        var li = document.createElement('li');
-        li.appendChild(document.createTextNode(o.title));
-        content.appendChild(li);
-        li.setAttribute('class', 'title');
-
-        
-        o.sublist.forEach(function(sub) {
-          var li = document.createElement('li');
-          li.appendChild(document.createTextNode(o.title));
-          content.appendChild(li);
-          li.setAttribute('class', 'title');
+        htmlString += '<li><a href="#" class="title">'+ o.title + '</a></li><ul class="sub-list">'
+        o.sublist.forEach(function(b) {
+          htmlString += '<li><a class="sub-title" href=' + b.url + '>' + b.subtitle + '</a></li>'
         })
+        htmlString += '</ul>'
       })
+      content.innerHTML = htmlString;
+
+      ol = document.getElementsByClassName('title');
+      for(var i=0; i<ol.length; i++) {
+        ol[i].onclick = function(a) {
+          sublist = document.getElementsByClassName('sub-list')
+          for(var j=0; j<sublist.length; j++) {
+            if (i !== j) {
+              sublist[j].style.display = "none" 
+            }
+          }
+          console.log('(a.target.parentNode.nextSibling: ', a.target.parentNode.nextSibling)
+          console.log('(a.target.parentNode.nextSibling222: ', a.target.parentNode.nextSibling.style.display)
+          if(a.target.parentNode.nextSibling.style.display == "block") {
+            console.log('nihaoa ');
+            a.target.parentNode.nextSibling.style.display = "none";
+          } else {
+            console.log('heheda');
+            a.target.parentNode.nextSibling.style.display = "block";
+          }
+        }
+      }
     }
   </script>
 </body>

@@ -1,0 +1,29 @@
+.wrap {
+  width: 500px;
+  margin: 20px 0 auto;
+  padding: 40px 20px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.shadow {
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 2px 3px #ececec;
+  background: #fff;
+}
+.content {
+  list-style-type: none;
+}
+.title, .sub-title {
+  cursor: pointer;
+  display: block;
+  padding: 5px 0;
+}
+.title:hover, .sub-title:hover {
+  background-color: #393;
+  border-radius: 4px;
+}
+.sub-list {
+  list-style-type: none;
+  display: none;
+}
