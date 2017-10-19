@@ -64,23 +64,23 @@
       content.innerHTML = htmlString;
 
       ol = document.getElementsByClassName('title');
+      var open = false;
+      var tmp = -1;
       for(var i=0; i<ol.length; i++) {
+        ol[i].index = i
         ol[i].onclick = function(a) {
           sublist = document.getElementsByClassName('sub-list')
           for(var j=0; j<sublist.length; j++) {
-            if (i !== j) {
-              sublist[j].style.display = "none" 
-            }
+            sublist[j].style.display = "none" 
           }
-          console.log('(a.target.parentNode.nextSibling: ', a.target.parentNode.nextSibling)
-          console.log('(a.target.parentNode.nextSibling222: ', a.target.parentNode.nextSibling.style.display)
-          if(a.target.parentNode.nextSibling.style.display == "block") {
-            console.log('nihaoa ');
-            a.target.parentNode.nextSibling.style.display = "none";
+          if (this.index == tmp && open) {
+            this.style.display = "none";
+            open = false;
           } else {
-            console.log('heheda');
-            a.target.parentNode.nextSibling.style.display = "block";
+            this.style.display = "block";
+            open = true;
           }
+          tmp = i;
         }
       }
     }
