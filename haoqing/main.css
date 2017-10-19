@@ -1,10 +1,11 @@
-.wrap {
+.wrapper {
   width: 500px;
-  margin: 20px 0 auto;
+  margin: 20px auto 0 auto;
   padding: 40px 20px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
+  font-size: 20px;
 }
 .shadow {
   border: 1px solid #e6e6e6;
@@ -18,10 +19,17 @@
   cursor: pointer;
   display: block;
   padding: 5px 0;
+  text-decoration: none;
+  color: #0a8cd2;
+  padding-left: 8px;
 }
 .title:hover, .sub-title:hover {
   background-color: #393;
   border-radius: 4px;
+  color: white;
+  font-size: 21px;
+  transition-duration: .5s;
+  text-indent: 20px;
 }
 .sub-list {
   list-style-type: none;

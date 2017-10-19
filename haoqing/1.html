@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./main.css">
 </head>
 <body>
-  <div class="wrap shadow">
+  <div class="wrapper shadow">
     <ol id="content">
       
     </ol>
@@ -55,9 +55,9 @@
       var content = document.getElementById('content');
       var htmlString = ''
       guide.forEach(function(o) {
-        htmlString += '<li><a href="#" class="title">'+ o.title + '</a></li><ul class="sub-list">'
+        htmlString += '<li class="lia"><a href="#" class="title">'+ o.title + '</a></li><ul class="sub-list">'
         o.sublist.forEach(function(b) {
-          htmlString += '<li><a class="sub-title" href=' + b.url + '>' + b.subtitle + '</a></li>'
+          htmlString += '<li class="lia"><a class="sub-title" href=' + b.url + '>' + b.subtitle + '</a></li>'
         })
         htmlString += '</ul>'
       })
@@ -66,21 +66,22 @@
       ol = document.getElementsByClassName('title');
       var open = false;
       var tmp = -1;
+      sublist = document.getElementsByClassName('sub-list')
       for(var i=0; i<ol.length; i++) {
         ol[i].index = i
         ol[i].onclick = function(a) {
-          sublist = document.getElementsByClassName('sub-list')
           for(var j=0; j<sublist.length; j++) {
             sublist[j].style.display = "none" 
           }
           if (this.index == tmp && open) {
-            this.style.display = "none";
+            sublist[this.index].style.display = "none";
             open = false;
           } else {
-            this.style.display = "block";
+            console.log('this.index===>', ol[this.index].style);
+            sublist[this.index].style.display = "block";
             open = true;
           }
-          tmp = i;
+          tmp = this.index;
         }
       }
     }
