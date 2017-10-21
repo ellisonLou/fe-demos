@@ -1,3 +1,22 @@
+/* html normal reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+body{
+  font:14px/1.5 "Hiragino Sans GB","Hiragino Sans GB W3",'微软雅黑';background:#fff;
+}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{display:inline-block;}
+.clearfix{display:block;}
+.clear{clear:both;height:0;font:0/0 Arial;visibility:hidden;}
+
+
+/* page style */
 .wrapper {
   width: 500px;
   margin: 20px auto 0 auto;
@@ -5,15 +24,18 @@
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 22px;
+}
+.wrapper > ol {
+  padding-left: 70px;
 }
 .shadow {
   border: 1px solid #e6e6e6;
   box-shadow: 0 2px 3px #ececec;
   background: #fff;
 }
-.content {
-  list-style-type: none;
+.title {
+  font-weight: bold;
 }
 .title, .sub-title {
   cursor: pointer;
@@ -22,16 +44,63 @@
   text-decoration: none;
   color: #0a8cd2;
   padding-left: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .title:hover, .sub-title:hover {
   background-color: #393;
   border-radius: 4px;
   color: white;
-  font-size: 21px;
+  font-size: 22px;
   transition-duration: .5s;
   text-indent: 20px;
+  text-shadow: 0 2px 1px #360;  /*分别代表 h shadow; v shadow; blur (模糊)； color */
 }
 .sub-list {
   list-style-type: none;
   display: none;
+  padding-left: 21px;
 }
+
+/* all page style */
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.btn:hover, .btn:focus {
+  color: #333;
+  text-decoration: none;
+}
+.btn:focus {
+  outline: 0;
+}
+.btn-primary {
+  color: white;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+.btn-primary:focus {
+  color: #fff;
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.5);
+}
+.btn-primary:active {
+  color: #fff;
+  background-color: #0062cc;
+  border-color: #005cbf;
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.5);
+}
+

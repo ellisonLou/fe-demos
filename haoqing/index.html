@@ -20,11 +20,11 @@
         sublist: [
           {
             subtitle: '去除字符串左右的空格',
-            url: '1-1.html'
+            url: './formtool/1.html'
           },
           {
             subtitle: '验证用户是否输入',
-            url: '1-2.html'
+            url: './formtool/2.html'
           }
         ]
       },
@@ -55,11 +55,11 @@
       var content = document.getElementById('content');
       var htmlString = ''
       guide.forEach(function(o) {
-        htmlString += '<li class="lia"><a href="#" class="title">'+ o.title + '</a></li><ul class="sub-list">'
+        htmlString += '<li class="lia"><a href="#" class="title">'+ o.title + '</a><dl class="sub-list">'
         o.sublist.forEach(function(b) {
-          htmlString += '<li class="lia"><a class="sub-title" href=' + b.url + '>' + b.subtitle + '</a></li>'
+          htmlString += '<dd class="lia"><a class="sub-title" href=' + b.url + '>' + b.subtitle + '</a></dd>'
         })
-        htmlString += '</ul>'
+        htmlString += '</dl></li>'
       })
       content.innerHTML = htmlString;
 
