@@ -13,9 +13,27 @@
   </style>
 </head>
 <body>
-  <div style="width: 400px; margin: 20px auto 0 auto;">
+  <div style="width: 500px; margin: 40px auto 0 auto;">
     <input class="form-control char-input" type="text" placeholder="请输入需要过滤的字符串">
-    <button class="btn btn-primary">过滤</button>
+    <button class="btn btn-primary" onclick="filter()">过滤</button>
+    <button class="btn btn-primary" onclick="copy()">复制</button>
   </div>
+
+  <script>
+    function filter() {
+      var input = document.getElementsByClassName('char-input')[0];
+      input.value = input.value.replace(/[ ]/g, "");
+    }
+    function copy() {
+      var input = document.getElementsByClassName('char-input')[0];
+      input.select();
+      try {
+        return document.execCommand("copy");
+      } catch (error) {
+        console.warn("Copy to clipboard failed", ex)
+        return false;
+      }
+    }
+  </script>
 </body>
 </html>
