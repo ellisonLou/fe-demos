@@ -1,0 +1,19 @@
+/* html normal reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+body{
+  font:14px/1.5 "Hiragino Sans GB","Hiragino Sans GB W3",'微软雅黑';background:#fff;
+}
+.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{display:inline-block;}
+.clearfix{display:block;}
+.clear{clear:both;height:0;font:0/0 Arial;visibility:hidden;}

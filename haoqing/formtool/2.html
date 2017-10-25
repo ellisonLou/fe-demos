@@ -5,12 +5,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../reset.css">
+  <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
   <title>验证用户输入</title>
   <style>
     .content {
       margin: 40px auto 0 auto;
       width: 30%;
+    }
+    .long-btn {
+      width: 100%;
+    }
+    .popover {
+      position: absolute;
+      width: 200px;
+      left: 490px;
+      display: none;
+    }
+    .popover-text {
+      color: red;
+      padding: 5px 0 5px 10px;
     }
   </style>
 </head>
@@ -20,23 +35,62 @@
       <label for="username" class="col-sm-2 control-label">用户名</label>
       <div class="col-sm-10">
         <input type="text" class="form-control" id="username" placeholder="用户名">
+        <div class="popover right" id="usernameAlert">
+          <div class="popover-text">请输入字符</div>
+          <div class="arrow"></div>
+        </div>
       </div>
     </div>
     <div class="form-group">
       <label for="password" class="col-sm-2 control-label">密码</label>
       <div class="col-sm-10">
         <input type="password" id="password" class="form-control" placeholder="密码">
+        <div class="popover right" id="passwordAlert">
+          <div class="popover-text">请输入字符</div>
+          <div class="arrow"></div>
+        </div>
       </div>
     </div>
     <div class="form-group">
       <label for="remarks" class="col-sm-2 control-label">备注</label>
       <div class="col-sm-10">
-        <input type="text" class="form-contol" id="remarks" placeholder="备注">
+        <textarea class="form-control" id="remarks" placeholder="备注"></textarea>
       </div>
     </div>
     <div class="form-group">
-      <input type="checkbox">记住我</input>
+      <div class="col-sm-10 col-sm-offset-2">
+          <input type="checkbox">记住我</input>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-2">
+        <button type="button" class="btn btn-primary long-btn" onclick="validate()">提交</button>
+      </div>
     </div>
   </form>
+
+  <script>
+    window.onload = function() {
+      username = document.getElementById('username');
+      password = document.getElementById('password');
+      username.onfocus = function() {
+        document.getElementById('usernameAlert').style.display = 'none';
+      }
+      password.onfocus = function() {
+        document.getElementById('passwordAlert').style.display = 'none';
+      }
+      validate = function() {
+        if (username.value.trim() === "") {
+          console.log('useranme value--->', username);
+          document.getElementById('usernameAlert').style.display = 'block';
+        }
+        if (password.value.trim() === "") {
+          console.log('password value--->', password);
+          document.getElementById('passwordAlert').style.display = 'block';
+        }
+        return false;
+      }
+    }
+  </script>
 </body>
 </html>
