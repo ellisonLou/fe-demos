@@ -39,6 +39,10 @@
           {
             subtitle: '可放大的图片',
             url: './pic/1.html'
+          },
+          {
+            subtitle: '鼠标移入移出改变透明效果',
+            url: './pic/2.html'
           }
         ]
       },
@@ -46,12 +50,12 @@
         title: '内容展示相关代码',
         sublist: [
           {
-            subtitle: '无刷新切换皮肤，刷新保存',
-            url: '3-1.html'
+            subtitle: '鼠标悬停，显示Tip效果',
+            url: './content_display/1.html'
           },
           {
             subtitle: '无刷新切换皮肤，刷新保存',
-            url: '4-1.html'
+            url: './content_display/2.html'
           }
         ]
       }
@@ -82,7 +86,6 @@
             sublist[this.index].style.display = "none";
             open = false;
           } else {
-            console.log('this.index===>', ol[this.index].style);
             sublist[this.index].style.display = "block";
             open = true;
           }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>鼠标移入移出改变透明效果</title>
+    
+    <style>
+        #img {
+            width: 400px;
+            height: 400px;
+            transition-duration: 0.4s;
+        }
+        .content {
+            width: 400px;
+            margin: 50px auto 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <img src="./model.jpg" alt="" id="img">
+    </div>
+    <script>
+        (function(){
+            var pic = document.getElementById('img');
+            pic.onmouseenter = function(e) {
+                pic.style.opacity = 0.5;
+            }
+            pic.onmouseleave = function(e) {
+                pic.style.opacity = 1;
+            }
+        })()
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>鼠标悬停，显示Tip效果</title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <style>
+        ol li {
+            width: 200px;
+            line-height: 35px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #2a6496;
+        }
+        .tip {
+            border-radius: 2px;
+            background: black;
+            opacity: 0.6;
+            position: absolute;
+            color: white;
+            z-index: 1;
+            padding: 2px 5px;
+            font-size: 12px;
+            display: none;
+        }
+        .content {
+            width: 500px;
+            margin: 50px auto 0 auto;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <ol>
+            <li><a href="#" data-title="真的好玩吗？不氪金好玩吗？">炉石传说真尼玛好玩！</a></li>
+            <li><a href="#" data-title="人多有什么用？我一个扭曲虚空。。">咱们棱多！</a></li>
+            <li><a href="#" data-title="不看，晕针！">你们看我叼吗？</a></li>
+            <li><a href="#" data-title="总有人来收。">自作聪明！</a></li>
+            <li><a href="#" data-title="椅子帮你认输了。。">撒泡尿回来收尸！</a></li>
+        </ol>
+    </div>
+    <script>
+        (function(){
+            var alinks = document.getElementsByTagName('a');
+            var tip = createTip()
+            for(var i=0; i<alinks.length; i++) {
+                alinks[i].onmousemove = function(e) {
+                    console.log('hello', e)
+                    var data_title = this.getAttribute('data-title');
+                    console.log('data-title-->', data_title)
+                    tip.innerHTML = data_title;
+                    tip.style.display = 'block';
+                    tip.style.left = e.clientX + 10 + 'px';
+                    tip.style.top = e.clientY + 10 + 'px';
+                }
+                alinks[i].onmouseleave = function(e) {
+                    tip.style.display = 'none';
+                }
+            }
+            function createTip(e) {
+                var div = document.createElement('div');
+                div.className = "tip";
+                return document.body.appendChild(div);
+            }
+        })()
+    </script>
+</body>
+</html>

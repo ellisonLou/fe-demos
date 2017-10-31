@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>无刷新切换皮肤，刷新保存</title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./css/blue.css" id="mystyle">
+    <style>
+        .content {
+            width: 360px;
+            margin: 50px auto 0 auto;
+        }
+        .btn-wrapper > button {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="button-wrapper">
+            <button class="btn btn-primary">切换蓝色皮肤</button>
+            <button class="btn btn-warning">切换黄色皮肤</button>
+            <button class="btn btn-success">切换绿色皮肤</button>
+        </div>
+    </div>
+    <script>
+        (function() {
+            var div = document.getElementsByClassName('button-wrapper')[0];
+            var mystyle = document.getElementById('mystyle');
+            var btns = div.getElementsByTagName('button');
+            var style_name = ['blue.css', 'yellow.css', 'green.css']
+            init();
+            for(var i=0; i<btns.length; i++) {
+                btns[i].index = i;
+                btns[i].onclick = function(e) {
+                    setStyle(this.index);
+                }
+            }
+
+            function setStyle(index) {
+                mystyle.href = './css/' + style_name[index];
+                setCookie('index', index, 1);
+            }
+
+            function setCookie(c_name, value, expiredays) {
+                var exdate=new Date();
+                exdate.setDate(exdate.getDate()+expiredays)
+                document.cookie=c_name+ "=" +escape(value)+
+                ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+            }
+            function getCookie(c_name) {
+                if (document.cookie.length>0){
+                    c_start=document.cookie.indexOf(c_name + "=")
+                    if (c_start!=-1) { 
+                        c_start=c_start + c_name.length+1 
+                        c_end=document.cookie.indexOf(";",c_start)
+                        if (c_end==-1) c_end=document.cookie.length
+                        return unescape(document.cookie.substring(c_start,c_end))
+                    } 
+                }
+                return ""
+            }
+            function init() {
+                cookie = getCookie('index');
+                if (cookie !== "") {
+                    setStyle(cookie);
+                }
+            }
+        })()
+    </script>
+</body>
+</html>
