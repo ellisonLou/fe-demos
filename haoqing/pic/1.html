@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片放大效果</title>
+    <style>
+        .small-box {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            float: left;
+        }
+        .small-img {
+            width: 300px;
+            height: 300px;
+        }
+        .mask-layer {
+            background-color: #fff;
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            display: none;
+            opacity: 0.3;
+            border: 1px red solid;
+            cursor: move;
+        }
+        .big-img {
+            width: 600px;
+            height: 600px;
+            position: absolute;
+        }
+        .big-box {
+            position: relative;
+            float: left;
+            display: none;
+            width: 240px;
+            height: 240px;
+            border: 1px grey solid;
+            top: 0;
+            left: 10px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: relative">
+        <div class="small-box">
+            <img src="./model.jpg" class="small-img" id="test">
+            <span class="mask-layer"></span>
+        </div>
+        <div class="big-box">
+            <img src="./model.jpg" class="big-img">
+        </div>
+        
+    </div>
+    
+    <script>
+        window.onload = function() {
+            var maskCover = document.getElementsByClassName('mask-layer')[0];
+            var bigImg = document.getElementsByClassName('big-img')[0];
+            var smallBox = document.getElementsByClassName('small-box')[0];
+            var bigBox = document.getElementsByClassName('big-box')[0];
+            smallBox.onmousemove = function(e) {
+                var _e = window.event || e;
+                maskCover.style.display = bigBox.style.display = 'block';
+                var clientRect = e.currentTarget.getBoundingClientRect();
+
+                _e.stopPropagation();
+                leftMargin = _e.clientX - clientRect.x - maskCover.offsetWidth/2;
+                topMargin = _e.clientY - clientRect.y - maskCover.offsetWidth/2;
+                // 边缘判定
+                if (leftMargin >= clientRect.width - maskCover.offsetWidth) {
+                    leftMargin = clientRect.width - maskCover.offsetWidth;
+                }
+                if (topMargin <= 0) {
+                    topMargin = 0;
+                }
+                if (leftMargin <= 0) {
+                    leftMargin = 0
+                }
+                if (topMargin >= clientRect.height - maskCover.offsetWidth) {
+                    topMargin = clientRect.height - maskCover.offsetWidth;
+                }
+                maskCover.style.left = leftMargin + 'px';
+                maskCover.style.top = topMargin + 'px';
+                bigImg.style.left = -leftMargin*2 + 'px';
+                bigImg.style.top = -topMargin*2 + 'px';
+            };
+            smallBox.onmouseout = function(e) {
+                maskCover.style.display = bigBox.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
