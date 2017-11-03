@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../reset.css">
   <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
-  <title>验证用户输入</title>
+  <title>限制用户输入长度</title>
   <style>
     .content {
       margin: 40px auto 0 auto;
@@ -52,9 +52,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="remarks" class="col-sm-2 control-label">备注</label>
+      <label for="remarks" class="col-sm-2 control-label" maxlength="10">备注</label>
       <div class="col-sm-10">
-        <textarea class="form-control" id="remarks" placeholder="备注"></textarea>
+        <textarea class="form-control" id="remarks" placeholder="备注" maxlength="30"></textarea>
       </div>
     </div>
     <div class="form-group">
@@ -71,14 +71,25 @@
 
   <script>
     window.onload = function() {
-      username = document.getElementById('username');
-      password = document.getElementById('password');
+      var username = document.getElementById('username');
+      var password = document.getElementById('password');
+      var textarea = document.getElementsByTagName('textarea')[0];
       username.onfocus = function() {
         document.getElementById('usernameAlert').style.display = 'none';
       }
       password.onfocus = function() {
         document.getElementById('passwordAlert').style.display = 'none';
       }
+      // textarea.onfocus = function(e) {
+      //   var a = document.getElementById('tip3');
+      //   console.log('className-->', )
+      //   if (a) {
+      //     if (a.className.search('/error/') != -1) {
+      //       a.className = a.className.replace(' error', '');
+      //     }
+      //     a.style.display = 'none';
+      //   }
+      // }
       validate = function() {
         if (username.value.trim() === "") {
           document.getElementById('usernameAlert').style.display = 'block';
@@ -86,8 +97,61 @@
         if (password.value.trim() === "") {
           document.getElementById('passwordAlert').style.display = 'block';
         }
+
+        max(textarea);
         return false;
       }
+
+      function max(o) {
+        var max_length = textarea.getAttribute('maxlength');
+        console.log(max_length);
+        console.log(o.value.length);
+        console.log(o.className);
+        if (o.value.length >= max_length && o.className.indexOf('error') == -1) {
+          error(o, '长度不能超过30个字符！');
+          o.className += " error";
+        } else {
+
+        }
+      }
+
+      function error(o, txt, show) {
+        console.log('2 o.classname-->', o.className)
+        if (arguments.length == 3 && show) {
+          o.tip && (o.tip.style.display = 'none');
+        } else {
+          console.log('qwe')
+          if (o.className.search(/error/) == -1) {
+            console.log('dfg')
+            o.tip = over(o, txt);
+            o.tip.style.display = 'block';
+            o.tip.id = 'tip3'
+          } else {
+            console.log('11111')
+            o.tip.style.display = 'block';
+          }
+        }
+      }
+
+      function over(o, txt) {
+        // 这里使用javascript直接创建popover,不直接写在页面上
+        popover = div('popover right')  //使用bootstrap创建向右边的popover
+        arrow = div('arrow');  //朝左向的箭头
+        popcontent = div('popover-text');  // popover里面的内容的包裹
+        popcontent.appendChild(div('', 'p', txt))  //popover真正的内容
+        popover.appendChild(popcontent);  //将内容写到popover里面
+        popover.appendChild(arrow);
+        o.parentNode.appendChild(popover);
+        return popover;
+      }
+      // 创建带有className的节点,如果不申明tag，则返回div
+      function div(cls, tag, txt) {
+        var ele = document.createElement(tag || 'div');
+        ele.className += cls;  // 给创建的节点添加class
+        txt && (ele.innerHTML = txt);  // 如果有txt内容，就写入创建的元素
+        return ele;
+      }
+
     }
   </script>
 </body>

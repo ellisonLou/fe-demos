@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../reset.css">
   <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
-  <title>验证用户输入</title>
+  <title>ctrl + enter 提交表单</title>
   <style>
     .content {
       margin: 40px auto 0 auto;
@@ -64,29 +64,24 @@
     </div>
     <div class="form-group">
       <div class="col-sm-10 col-sm-offset-2">
-        <button type="button" class="btn btn-primary long-btn" onclick="validate()">提交</button>
+        <button type="button" class="btn btn-primary long-btn" id="submit">提交</button>
       </div>
     </div>
   </form>
 
   <script>
     window.onload = function() {
-      username = document.getElementById('username');
-      password = document.getElementById('password');
-      username.onfocus = function() {
-        document.getElementById('usernameAlert').style.display = 'none';
+      var btn = document.getElementById('submit')
+      btn.onclick = function() {
+          return false;
       }
-      password.onfocus = function() {
-        document.getElementById('passwordAlert').style.display = 'none';
-      }
-      validate = function() {
-        if (username.value.trim() === "") {
-          document.getElementById('usernameAlert').style.display = 'block';
-        }
-        if (password.value.trim() === "") {
-          document.getElementById('passwordAlert').style.display = 'block';
-        }
-        return false;
+      document.onkeyup = function(e) {
+          e = e || window.e;
+          var keycode = e.keyCode || e.which;
+          if (e.ctrlKey && keycode == 13) {
+              alert('提交成功')
+          }
+          return false;
       }
     }
   </script>

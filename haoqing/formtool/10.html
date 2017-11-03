@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" style="font-size: 14px;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../reset.css">
+  <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
+  <title>全选和取消全选</title>
+  <style>
+    .content {
+      margin: 40px auto 0 auto;
+      width: 30%;
+    }
+  </style>
+</head>
+<body>
+  <div class="content form-horizontal">
+      <h5><input type="checkbox" id="all" /><label>全选选项</label></h5>
+      <p><input type="checkbox" name="item" /><label>选项（一）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（二）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（三）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（四）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（五）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（六）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（七）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（八）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（九）</label></p>
+      <p><input type="checkbox" name="item" /><label>选项（十）</label></p>
+  </div>
+
+  <script>
+    (function() {
+      var all = document.getElementById('all');
+      var arr = document.getElementsByTagName('input');
+      var len = arr.length - 1;
+      all.onclick = function(e) {
+        choose(this.checked);
+      }
+
+      function choose(o) {
+        each(arr, function(i) {
+          arr[i].checked = o;
+        });
+      }
+
+      function each(arr, fn) {  // a 方法用来迭代arr
+        if (arr.length) {
+          for (var i=1; i<arr.length; i++) {  //从1开始，不包括全选checkbox
+            fn.call(arr[i], i);
+          }
+        }
+      }
+
+      each(arr, function(i) {
+        arr[i].onclick = function() {  //这里面不包括all checkbox的事件
+          if (checkLen(arr) == len) {
+            all.checked = true;
+          } else {
+            all.checked = false;
+          }
+
+        }
+      })
+      function checkLen(arr) {  //用来获取选取的checkbox的长度
+        num = 0;
+        each(arr, function(i) {
+          if (arr[i].checked) {
+            num ++;
+          }
+        })
+        return num;
+      }
+    })()
+  </script>
+</body>
+</html>

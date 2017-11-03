@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>仿照微博可输入剩余字符个数</title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
+    <style>
+        .number {
+            color: red;
+            font-size: 26px;
+            margin: 0 5px;
+            font-family: Constantia, Georgia;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="content" style="width: 500px; margin: 50px auto;">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <textarea class="form-control" id="text1" cols="100" rows="10" maxlength="100"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <span>还可以输入</span>
+                    <span class="number">100</span>
+                    <span>个字符</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <button class="btn btn-primary" style="width: 100%">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        (function() {
+            var text1 = document.getElementById('text1');
+            var maxLength = text1.getAttribute('maxlength');
+            var number = document.getElementsByClassName('number')[0];
+            text1.onkeyup = function(e) {
+                number.innerHTML = maxLength - e.target.value.length;
+            }
+        })()
+    </script>
+</body>
+</html>
