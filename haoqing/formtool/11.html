@@ -82,8 +82,6 @@
 
       //初始的方法
       each(items, function(i, j) {
-        console.log('in each===>', i);
-        console.log('in jjj--->', j);
         if (i==0) {
           fill(province_sp, items[0]);  // 填充province
         }else {
@@ -92,11 +90,9 @@
       })
       // var city_sl = city_sp.getElementsByTagName('select')[0];
       var province_sl = province_sp.getElementsByTagName('select')[0];
-      console.log('province select able-->', province_sl);
 
       //当select被选择
       province_sl.onchange = function(e) {
-        console.log('this.value--->', this.value);
         fill(city_sp, items[this.value])  // 必须在option中把value加上
       }
 

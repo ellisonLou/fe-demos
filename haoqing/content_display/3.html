@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../reset.css">
+    <style>
+        .main {
+            margin: 20% auto;
+            width: 350px;
+            height: 100px;
+        }
+        .dialog {
+            width: 500px;
+            position: fixed;
+            background-color: #fff;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        .dialog-head {
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .dialog-title {
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.42857143;
+        }
+        button.dialog-close {
+            -webkit-appearance: none;
+            padding: 0;
+            cursor: pointer;
+            background: 0 0;
+            border: 0;
+        }
+        .dialog-close {
+            float: right;
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+        }
+        .dialog-mask {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        .dialog-content {
+            padding: 15px;
+            position: relative;
+        }
+        .dialog-footer {
+            padding: 15px;
+            text-align: right;
+            border-top: 1px solid #e5e5e5;
+        }
+        .dialog-footer > .btn-default {
+            margin-right: 14px;
+        }
+        .dialog-alert .dialog-footer {
+            display: none;
+        }
+        .none {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <button id="btn0" class="btn btn-primary">弹出alert</button>
+        <button id="btn1" class="btn btn-warning">弹出带footer的dialog</button>
+    </div>
+    <script>
+        //Dialog类
+        function Dialog() {
+            var args = arguments[0];
+            console.log('new dialog,: ', args);
+            for (var i in args) {
+                // 这里要把defaults里面的属性全都记录在this。
+                this[i] = args[i];  // 这个里面的属性有id, template, data[title, content];
+            }
+            console.log('this==>', this)
+            this.init();
+        }
+
+        function wrap(tpl, data) {  // 模板字符串替换
+            tpl = tpl.replace(/{{(content)}}/g, data.content);
+            tpl = tpl.replace(/{{(title)}}/g, data.title);
+            return tpl;
+        }
+
+        Dialog.prototype = {
+            init: function() {
+                // 1. render创建dialog
+                this.render();
+                // 2. setType设置dialog类型
+                this.setType();
+                // 3. setPos设置dialog位置
+                this.setPos();
+                // 4. setParam设置dialog的参数
+                this.setParams();
+                // 5. 设置dialog的事件
+                this.bind();
+            },
+            render: function() {
+                if (!util.$(this.id)) { //看页面上有没有dialog,如果没有，直接创建一个
+                    var div = document.createElement('div');
+                    div.className = 'dialog-outer none';
+                    var dialog = wrap(this.template, this.data);
+                    div.innerHTML = dialog;
+                    document.body.appendChild(div);
+                }
+                this.dialog = util.$(this.id);
+                this.box = this.dialog.parentNode;
+                this.show();
+            },
+            setType: function() {
+                var cls = 'alert';
+                this.type && (cls=this.type);
+                this.dialog.className = 'dialog dialog-' + cls;
+            },
+            setPos: function() { // 将dialog放在视窗中间
+                var el = this.dialog,
+                    w  = el.offsetWidth,  // 获取dialog的宽度，包括border和scrollbar
+                    h  = el.offsetHeight;  // 获取dialog的高度，包括border和scrollbar
+                el.style.top  = (util.viewSize().height - h) / 2 * 0.7 + 'px';
+                el.style.left = (util.viewSize().width - w) / 2 + 'px';
+                
+            },
+            setParams: function() {
+                this.ok = util.$('ok');
+                this.cancel = util.$('cancel');
+                this.mask = util.$('mask');
+                this.close = util.$('close');
+            },
+            bind: function() {
+                var that = this;
+                this.ok.addEventListener('click', function() {
+                    that.hide();
+                }, false);
+                this.cancel.addEventListener('click', function() {
+                    that.hide();
+                }, false);
+                this.mask.addEventListener('click', function() {
+                    that.hide();
+                }, false);
+                this.close.addEventListener('click', function() {
+                    that.hide();
+                }, false);
+            },
+            hide: function() {
+                this.box && (this.box.style.display = 'none');
+            },
+            show: function(obj) {
+                this.box && (this.box.style.display = 'block');
+            },
+            
+        }
+
+        // 工具类util
+        var util = {
+            '$': function(id) {
+                return document.getElementById(id);
+            },
+            'viewSize': function() {
+                var w=window.innerWidth
+                || document.documentElement.clientWidth
+                || document.body.clientWidth;
+
+                var h=window.innerHeight
+                || document.documentElement.clientHeight
+                || document.body.clientHeight;
+                return {
+                    width: w,
+                    height: h
+                }
+            }
+        }
+
+        // 获取四个按钮
+        var btn0 = util.$('btn0');
+        var btn1 = util.$('btn1');
+        var btn2 = util.$('btn2');
+        var btn3 = util.$('btn3');
+
+
+        // 设置预备的参数
+        var defaults = {
+            id: 'dialog',
+            template: 
+                "<div id='dialog' class='dialog'>" +
+                    "<div class='dialog-head'>" +
+                        "<button class='dialog-close' id='close'>x</button>" +
+                        "<h4 class='dialog-title'>{{title}}</h4>" + 
+                    "</div>" +
+                    "<div class='dialog-content'>{{content}}</div>" + 
+                    "<div class='dialog-footer'>" +
+                        "<button id='cancel' class='btn btn-default'>取消</button>" + 
+                        "<button id='ok' class='btn btn-primary'>确定</button>" +
+                    "</div>" +
+                "</div>" + 
+                "<div class='dialog-mask' id='mask'></div>"
+            ,
+            data: {
+                title: 'dialog title',
+                content: "<p>这里放内容1</p><p>这里放内容1</p><p>这里放内容1</p><p>这里放内容1</p><p>这里放内容1</p><p>这里放内容1</p>"
+            }
+
+        }
+        btn0.onclick = function() {
+            defaults.type = 'alert';
+            new Dialog(defaults);
+        }
+        btn1.onclick = function() {
+            defaults.type = 'confirm';
+            new Dialog(defaults);
+        }
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模拟更好看的滚动条</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .clearfix{overflow:hidden;_zoom:1;}
+        .container {
+            border: 1px #e5e5e5 solid;
+            padding: 25px;
+            margin: 30px auto;
+            width: 630px;
+            height: 390px;
+        }
+        .tabs > ul {
+            width: 500px;
+        }
+        ul > li {
+            list-style: none;
+            display: block;
+        }
+        .tabs li {
+            background-color: #f7f7f7;
+            width: 90px;
+            float: left;
+            padding: 5px 0;
+            text-align: center;
+            cursor:pointer;
+            transition:all 0.5s linear;
+        }
+        .tabs li.on {
+            background-color: red;
+            color: white;
+        }
+        .bar li {
+            background-color: #f7f7f7;
+            padding: 7px 24px;
+            cursor:pointer;
+            transition:all 0.5s linear;
+            border-bottom: 1px solid #ccc;
+        }
+        .bar li.on {
+            background-color: #000;
+            color: #fff;
+        }
+        .photo {
+            width: 500px;
+        }
+        .photo img {
+            width: 500px;
+        }
+        .photo, .side {
+            float: left;
+        }
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs clearfix">
+            <ul>
+                <li class="on">时尚女装</li>
+                <li>精美潮装</li>
+            </ul>
+        </div>
+        <div class="main">
+            <div class="blocks">
+                <div class="photo">
+                    <a href="#" class="link"><img src="./pic/xiongyali.jpg" alt=""></a>
+                    <a href="#" class="link none"><img src="./pic/erz-sj-1112.jpg" alt=""></a>
+                    <a href="#" class="link none"><img src="./pic/hdhymjd.jpg" alt=""></a>
+                </div>
+                <div class="side">
+                    <ul class="bar">
+                        <li class="on">欧美羽绒</li>
+                        <li>经典男装</li>
+                        <li>全新女装</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="blocks none">
+                <div class="photo">
+                    <a href="#" class="link none"><img src="./pic/yangrongshanx.jpg" alt=""></a>
+                    <a href="#" class="link none"><img src="./pic/jd5.jpg" alt=""></a>
+                    <a href="#" class="link none"><img src="./pic/niuzaihuodong.jpg" alt=""></a>
+                </div>
+                <div class="side">
+                    <ul class="bar">
+                        <li class="on">超累男装</li>
+                        <li>休闲衬衫</li>
+                        <li>凡行动派</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        (function() {
+            var blocks = document.querySelectorAll('.blocks');
+            var blockLength = blocks.length;
+
+            var links = document.querySelectorAll('.link');
+            var linkLength = links.length;
+
+            var bars = document.querySelectorAll('.bar li');
+            var barLen = bars.length;
+
+            var tabs = document.querySelectorAll('.tabs li');
+            var tabLen = tabs.length;
+
+            function toggleTab(index) {  // 让tab每4.5s轮转一次
+                // 清空所有样式
+                for(var i=0; i<tabLen; i++) {
+                    tabs[i].classList.remove('on');
+                    blocks[i].style.display = 'none';
+                    links[i].style.display = 'none';
+                }
+                blocks[index].style.display = 'block';
+                tabs[index].classList.add('on');
+            }
+            function toggleBar(index) {  // 让bar每1.5s轮转一次
+                //清空所有的display
+                for (var i=0; i<barLen; i++) {
+                    links[i].style.display = 'none';
+                    bars[i].classList.remove('on');
+                }
+                // 显示正确的图片和bar序号
+                links[index].style.display = 'block';
+                links[index].classList.add('on');
+                bars[index].style.display = 'block';
+                bars[index].classList.add('on');
+            }
+
+            var barCur = 0;  //边上的bar滚动的计数器
+            var tabCur = 0;  //头上的tab滚动的计数器
+            function change() {
+                setInterval(function() {
+                    if (barCur >= barLen-1) {
+                        barCur = 0
+                    } else {
+                        barCur++;
+                    }
+                    if (barCur%3 == 0) {
+                        if (tabCur >= tabLen-1) {
+                            tabCur = 0;
+                        } else {
+                            tabCur++;
+                        }
+                        toggleTab(tabCur);
+                    }
+                    toggleBar(barCur);
+                }, 1500)
+            }
+            change();
+        })()
+    </script>
+</body>
+</html>
