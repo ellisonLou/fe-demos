@@ -13,11 +13,11 @@
         .clearfix{overflow:hidden;_zoom:1;}
         .main {
             border: 1px #e5e5e5 solid;
-            margin: 30px auto;
+            margin: 100px auto 0;
             width: 400px;
             height: 500px;
         }
-        .main_cont {
+        .main-cont {
             padding: 15px;
             overflow: hidden;
         }
@@ -42,16 +42,16 @@
         }
         .bar-mid {
             width: 11px;
-            height: 40px;
+            height: 70px;
             background-color: #e8e8e8;
             border: #e9e9e9 solid 1px;
-            height: 130px;
+            position: absolute;
         }
     </style>
 </head>
 <body>
     <div class="main" id="main">
-        <div class="main_cont">
+        <div class="main-cont">
             <h2>春江花月夜</h2>
             <p>春江潮水连海平，海上明月共潮生。</p>
             <p>滟滟随波千万里，何处春江无月明。</p>
@@ -100,8 +100,8 @@
         (function() {
 
             var util = {
-                '$': function(id) {
-                    return document.getElementById(id);
+                '$': function(o) {
+                    return document.querySelector(o);
                 },
                 'wheel': function(target, fn) {
                     // 只执行chrome的逻辑
@@ -139,7 +139,7 @@
                     bar.innerHTML = this.template;
                     bar.className = "scroll-bar";
                     main.classList.add("scroll-wrap");
-                    div.appendChild(bar);
+                    main.appendChild(bar);
                     this.main = main;
                     this.bar =  bar;
                 },
@@ -149,23 +149,39 @@
                 },
 
                 handler: function(distance) {
-                    if (distance > 0) {
+                    console.log('distance-->', distance);
+                    if (distance > 0) {  // distance为正值，代表向上滚动，内容距离上面-15
                         this.now -= 15;
                     } else {
-                        this.now += 15;
+                        this.now += 15;  // distance为负值，代表向下滚动，内容距离上面+15
                     }
-                    this.scroll();
+                    this.scroll();  // 里面要加上边界值判定
                 },
 
                 setParam: function() {
                     this.now = 0;
+                    this.content = util.$('.scroll-cont');
+                    this.barTop = util.$('.bar-top');
+                    this.dragger = util.$('.bar-mid');
+                    this.batBom = util.$('.bar-bom')
                 },
 
-                scroll: function() {}
+                scroll: function() {  // 根据this.now的值进行内容的滚动和scrollbar的滚动
+                    var n = this.now,
+                        contentTop = 0;
+                    if (n < 0) {  //内容滚动的上边界值
+                        n = 0;
+                    }
+                    if (n > this.main.offsetHeight - this.dragger.offsetHeight) {
+                        n = this.main.offsetHeight - this.dragger.offsetHeight;  // 内容滚动的下边界值
+                    }
+                    this.now = n;
+                    contentTop = n * (this.content.offsetHeight / (this.main.offsetHeight + this.dragger.offsetHeight));
+                    this.dragger.style.top = n + 'px';
+                    this.content.style.top = -contentTop + 'px';
+                }
 
             }
-
-           
 
             // 关于scrollBar的用法
             var defaults = {
