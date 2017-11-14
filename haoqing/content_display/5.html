@@ -43,10 +43,11 @@
         .bar-mid {
             width: 11px;
             height: 70px;
-            background-color: #e8e8e8;
-            border: #e9e9e9 solid 1px;
+            background-color: pink;
+            border: pink solid 1px;
             position: absolute;
         }
+        
     </style>
 </head>
 <body>
@@ -125,8 +126,8 @@
                 init: function() {
                     this.render();
                     this.setParam();
-                    this.bind();
-                    // this.addDragEvent();
+                    this.bind();  // 鼠标滚动事件绑定
+                    this.addDragEvent(this.dragger);  // 滚动条的拖动事件
                 },
                 render: function() {
                     // 把要包裹的元素用wrapper包起来
@@ -149,7 +150,6 @@
                 },
 
                 handler: function(distance) {
-                    console.log('distance-->', distance);
                     if (distance > 0) {  // distance为正值，代表向上滚动，内容距离上面-15
                         this.now -= 15;
                     } else {
@@ -163,7 +163,7 @@
                     this.content = util.$('.scroll-cont');
                     this.barTop = util.$('.bar-top');
                     this.dragger = util.$('.bar-mid');
-                    this.batBom = util.$('.bar-bom')
+                    this.batBom = util.$('.bar-bom');
                 },
 
                 scroll: function() {  // 根据this.now的值进行内容的滚动和scrollbar的滚动
@@ -176,10 +176,39 @@
                         n = this.main.offsetHeight - this.dragger.offsetHeight;  // 内容滚动的下边界值
                     }
                     this.now = n;
-                    contentTop = n * (this.content.offsetHeight / (this.main.offsetHeight + this.dragger.offsetHeight));
+                    contentTop = n * (this.content.offsetHeight / (this.main.offsetHeight + this.dragger.offsetHeight));  // 内容滚动的值是滚动条滚动值的 (this.content.offsetHeight / (this.main.offsetHeight + this.dragger.offsetHeight))倍
                     this.dragger.style.top = n + 'px';
                     this.content.style.top = -contentTop + 'px';
+                },
+
+                addDragEvent: function(dragger) {
+                    var startY = 0,
+                        that = this,
+                        doc = document;
+
+
+                    var drag = {
+                        'down': function(e) {
+                            startY = e.clientY - dragger.offsetTop;
+                            doc.addEventListener('mousemove', drag.move, false);
+                            doc.addEventListener('mouseup', drag.up, false);
+                            return false;
+                        },
+                        'move': function(e) {
+                            that.now = e.clientY - startY;  // 其实就是(e.clientY - e.clientY + dragger.offsetTop) 两个e.clientY的差就是拖动的距离
+                            that.scroll();  // scroll的滚动值都是看this.now
+                            return false;  // 为什么要 return false;
+                        },
+                        'up': function(e) {
+                            doc.removeEventListener('mousemove', drag.move);
+                            doc.removeEventListener('mouseup', drag.up);
+                        }
+                    }
+                    dragger.onmousedown = function(e) {
+                        drag.down(e);  // 鼠标在滚动条上面放下时，触发down事件
+                    }
                 }
+
 
             }
 

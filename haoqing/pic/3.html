@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片轮播效果</title>
+    
+    <style>
+        .main {
+            width: 400px;
+            margin: 50px auto 0 auto;
+        }
+        .cast {
+            position: relative;
+        }
+        ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div id="box">
+            <ul id="cast" class="cast">
+                <li><a><img src="./src/1.png" /></a></li>
+                <li><a><img src="./src/1.png" /></a></li>
+                <li><a><img src="./src/1.png" /></a></li>
+                <li><a><img src="./src/1.png" /></a></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        (function() {
+            var util = {
+                '$': function(o) {
+                    return document.querySelector(o);
+                }
+            }
+            var li = util.$('li'),
+                ul = util.$('#cast'),
+                img = util.$('img'),
+                prev = util.$('#prev'),
+                next = util.$('#next'),
+                icon = util.$('.icon');
+                box = util.$('box'),
+                len = li.length,
+                now = 0;
+
+            var timer = setInterval(function() {
+                next.onclick();
+            }, 3000)
+
+            
+
+            prev.onclick = function(e) {
+                if (now > 0) {
+                    now --;
+                } else {
+                    now = len;
+                }
+                scroll();
+            }
+
+            next.onclick = function(e) {
+                if (now > len - 1) {
+                    now = 0;
+                } else {
+                    now++;
+                }
+                scroll();
+            }
+
+            function scroll() {
+                act();
+                iconScroll();
+            }
+
+            function iconScroll() {
+                for(var i=0; i<icon.length; i++) {
+                    icon[i].classList.remove('active');
+                }
+                icon[now].classList.add('active');
+            }
+
+            box.onmouseover = function(e) {
+                clearInterval(timer);
+            }
+            box.onmouseout = function(e) {
+                timer = setInterval(function() {
+                    next.onclick();
+                }, 3000)
+            }
+
+
+            function css(obj, attr) {
+                if (obj.currentStyle) {
+                    return obj.currentStyle[attr];
+                } else {
+                    return getComputedStyle(obj, false)[attr];
+                }
+            }
+
+            function act(obj, attr, target, fn) {
+                obj.timer = setInterval(function() {
+                    var cur = parseInt(css(obj, attr)),
+                        stop = true;
+                        speed = (target - cur) / 8;
+                    speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                    if (target != cur) {
+                        stop = false;
+                        obj.style[attr] += cur + speed + 'px';
+                    }
+                    if (stop) {
+                        fn.call();
+                        obj.timer = null;
+
+                    }
+                }, 3000)
+                
+            }
+        })()
+    </script>
+</body>
+</html>
