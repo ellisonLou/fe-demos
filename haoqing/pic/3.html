@@ -4,33 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../reset.css">
     <title>图片轮播效果</title>
     
     <style>
-        .main {
-            width: 400px;
-            margin: 50px auto 0 auto;
+        ul > .li-left {
+            display: block;
+            float: left;
         }
-        .cast {
+        li a img {
+            width: 650px;
+            height: 266px;
+        }
+        #box {
+            width: 650px;
+            height: 266px;
+            overflow: hidden;
             position: relative;
         }
-        ul {
+        .cast {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 5200px;
+        }
+        .carousel-control {
             position: absolute;
             top: 0;
+            bottom: 0;
             left: 0;
+            font-size: 20px;
+            text-align: center;
+            text-shadow: 0 1px 2px rgba(0 0 0 0.6);
+            background-color: rgba(0 0 0 0);
         }
+        .carousel-container-left {
+            width: 10%;
+            /* opacity: 0; */
+            transition: opacity 0.3;
+        }
+        .carousel-container-left.left .arrow-left {
+            display: inline-block;
+            width: 20px;
+            height: 40px;
+            background: url('./src/arrow-left.png') no-repeat center center;
+        }
+        .carousel-container-right.right .arrow-right {
+            display: inline-block;
+            width: 20px;
+            height: 40px;
+            background: url('./src/arrow-right.png') no-repeat center center;
+        }
+        .chevron-left, .chevron-right {
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            margin-top: -10px;
+        }
+
     </style>
 </head>
 <body>
     <div class="main">
         <div id="box">
             <ul id="cast" class="cast">
-                <li><a><img src="./src/1.png" /></a></li>
-                <li><a><img src="./src/1.png" /></a></li>
-                <li><a><img src="./src/1.png" /></a></li>
-                <li><a><img src="./src/1.png" /></a></li>
+                <li class="li-left"><a><img src="./src/1.jpeg" /></a></li>
+                <li class="li-left"><a><img src="./src/2.jpg" /></a></li>
+                <li class="li-left"><a><img src="./src/3.jpg" /></a></li>
+                <li class="li-left"><a><img src="./src/4.jpg" /></a></li>
+                <li class="li-left"><a><img src="./src/1.jpeg" /></a></li>
+                <li class="li-left"><a><img src="./src/2.jpg" /></a></li>
+                <li class="li-left"><a><img src="./src/3.jpg" /></a></li>
+                <li class="li-left"><a><img src="./src/4.jpg" /></a></li>
             </ul>
         </div>
+        <a href="#" id="prev" class="left carousel-container-left carousel-control">
+            <span class="arrow-left chevron-left"></span>
+        </a>
+        <a href="#" id="next" class="right carousel-container-right carousel-control">
+            <span class="arrow-left chevron-left"></span>
+        </a>
     </div>
     <script>
         (function() {
@@ -39,51 +92,56 @@
                     return document.querySelector(o);
                 }
             }
-            var li = util.$('li'),
-                ul = util.$('#cast'),
-                img = util.$('img'),
-                prev = util.$('#prev'),
-                next = util.$('#next'),
-                icon = util.$('.icon');
-                box = util.$('box'),
+            var li = document.getElementsByTagName('li'),
+                ul = document.getElementById('cast');
+                img = document.getElementsByTagName('img'),
+                prev = document.getElementById('prev')
+                next = document.getElementById('next');
+                // icon = util.$('.icon');
+                box = document.getElementById('box');
                 len = li.length,
+                li_w = 0;
                 now = 0;
+            img[0].onload = function(e) {
+                li_w = this.offsetWidth;
+            }
 
             var timer = setInterval(function() {
+                console.log('sdvnksdnvsdjsdsd');
                 next.onclick();
-            }, 3000)
+            }, 1000)
 
-            
 
             prev.onclick = function(e) {
                 if (now > 0) {
                     now --;
                 } else {
-                    now = len;
+                    now = len-1;
                 }
                 scroll();
             }
 
             next.onclick = function(e) {
-                if (now > len - 1) {
-                    now = 0;
-                } else {
+                if (now < len - 1) {
                     now++;
+                } else {
+                    now = len/2;  //调到中间上一张的位置
+                    ul.style.left = -(li_w * (len/2 - 1)) + 'px';  // 第二轮第一张滚动，看起来就是从最后一张到第一张滚动
                 }
                 scroll();
             }
 
             function scroll() {
-                act();
-                iconScroll();
+                act(ul, 'left', now*(-li_w));
+                // iconScroll();
             }
 
-            function iconScroll() {
-                for(var i=0; i<icon.length; i++) {
-                    icon[i].classList.remove('active');
-                }
-                icon[now].classList.add('active');
-            }
+            // function iconScroll() {
+            //     for(var i=0; i<icon.length; i++) {
+            //         icon[i].classList.remove('active');
+            //     }
+            //     icon[now].classList.add('active');
+            // }
 
             box.onmouseover = function(e) {
                 clearInterval(timer);
@@ -94,7 +152,6 @@
                 }, 3000)
             }
 
-
             function css(obj, attr) {
                 if (obj.currentStyle) {
                     return obj.currentStyle[attr];
@@ -104,21 +161,23 @@
             }
 
             function act(obj, attr, target, fn) {
-                obj.timer = setInterval(function() {
-                    var cur = parseInt(css(obj, attr)),
-                        stop = true;
-                        speed = (target - cur) / 8;
-                    speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
-                    if (target != cur) {
+                obj.timer && clearInterval(obj.timer);
+                obj.timer = setInterval(function(){
+                    var stop = true;
+                    var cur = parseInt(css(obj, attr));  // 初始的Left是0
+                    var speed = (target - cur) / 8;
+                    speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);  // 如果不加这一句，会一直在循环内，动画不会结束。。
+                    if(cur != target){
                         stop = false;
-                        obj.style[attr] += cur + speed + 'px';
+                        obj.style[attr] = cur + speed + 'px';
                     }
-                    if (stop) {
-                        fn.call();
+    
+                    if(stop){
+                        clearInterval(obj.timer);
                         obj.timer = null;
-
+                        fn && fn();
                     }
-                }, 3000)
+                }, 30);
                 
             }
         })()
