@@ -8,6 +8,17 @@
     <title>图片轮播效果</title>
     
     <style>
+        .main {
+            width: 650px;
+            height: 266px;
+            margin: 50px auto 0;
+            background-color: white;   
+        }
+        .banner {
+            width: 650px;
+            height: 266px;
+            position: relative;
+        }
         ul > .li-left {
             display: block;
             float: left;
@@ -38,22 +49,38 @@
             text-shadow: 0 1px 2px rgba(0 0 0 0.6);
             background-color: rgba(0 0 0 0);
         }
-        .carousel-container-left {
+        .carousel-container-left, .carousel-container-right {
             width: 10%;
-            /* opacity: 0; */
-            transition: opacity 0.3;
+            opacity: 0;
+            transition: .3s;
+        }
+        .carousel-container-right.right {
+            right: 0;
+            left: auto;
         }
         .carousel-container-left.left .arrow-left {
             display: inline-block;
             width: 20px;
             height: 40px;
             background: url('./src/arrow-left.png') no-repeat center center;
+            background-size: 20px 40px;
         }
         .carousel-container-right.right .arrow-right {
             display: inline-block;
             width: 20px;
             height: 40px;
             background: url('./src/arrow-right.png') no-repeat center center;
+            background-size: 20px 40px;
+        }
+        .chevron-left {
+            margin-left: -10px;
+            transform: translateX(-42px);
+            transition: .3s;
+        }
+        .chevron-right {
+            margin-left: -10px;
+            transform: translateX(42px);
+            transition: .3s;
         }
         .chevron-left, .chevron-right {
             position: absolute;
@@ -61,29 +88,42 @@
             z-index: 5;
             margin-top: -10px;
         }
+        .banner:hover {
+            cursor: pointer;
+        }
+        .banner:hover a.carousel-container-right, .banner:hover a.carousel-container-left {
+            opacity: 1;
+            transition: opacity 0.3;
+        }
+        .banner:hover .chevron-left, .banner:hover .chevron-right {
+            transform: translateX(0);
+            transition: .5s;
+        }
 
     </style>
 </head>
 <body>
-    <div class="main">
-        <div id="box">
-            <ul id="cast" class="cast">
-                <li class="li-left"><a><img src="./src/1.jpeg" /></a></li>
-                <li class="li-left"><a><img src="./src/2.jpg" /></a></li>
-                <li class="li-left"><a><img src="./src/3.jpg" /></a></li>
-                <li class="li-left"><a><img src="./src/4.jpg" /></a></li>
-                <li class="li-left"><a><img src="./src/1.jpeg" /></a></li>
-                <li class="li-left"><a><img src="./src/2.jpg" /></a></li>
-                <li class="li-left"><a><img src="./src/3.jpg" /></a></li>
-                <li class="li-left"><a><img src="./src/4.jpg" /></a></li>
-            </ul>
+    <div class="main" id="main">
+        <div class="banner">
+            <div id="box">
+                <ul id="cast" class="cast">
+                    <li class="li-left"><a><img src="./src/1.jpeg" /></a></li>
+                    <li class="li-left"><a><img src="./src/2.jpg" /></a></li>
+                    <li class="li-left"><a><img src="./src/3.jpg" /></a></li>
+                    <li class="li-left"><a><img src="./src/4.jpg" /></a></li>
+                    <li class="li-left"><a><img src="./src/1.jpeg" /></a></li>
+                    <li class="li-left"><a><img src="./src/2.jpg" /></a></li>
+                    <li class="li-left"><a><img src="./src/3.jpg" /></a></li>
+                    <li class="li-left"><a><img src="./src/4.jpg" /></a></li>
+                </ul>
+            </div>
+            <a href="#" id="prev" class="left carousel-container-left carousel-control">
+                <span class="arrow-left chevron-left"></span>
+            </a>
+            <a href="#" id="next" class="right carousel-container-right carousel-control">
+                <span class="arrow-right chevron-right"></span>
+            </a>
         </div>
-        <a href="#" id="prev" class="left carousel-container-left carousel-control">
-            <span class="arrow-left chevron-left"></span>
-        </a>
-        <a href="#" id="next" class="right carousel-container-right carousel-control">
-            <span class="arrow-left chevron-left"></span>
-        </a>
     </div>
     <script>
         (function() {
@@ -98,7 +138,7 @@
                 prev = document.getElementById('prev')
                 next = document.getElementById('next');
                 // icon = util.$('.icon');
-                box = document.getElementById('box');
+                main = document.getElementById('main');
                 len = li.length,
                 li_w = 0;
                 now = 0;
@@ -107,16 +147,16 @@
             }
 
             var timer = setInterval(function() {
-                console.log('sdvnksdnvsdjsdsd');
                 next.onclick();
-            }, 1000)
+            }, 3000)
 
 
             prev.onclick = function(e) {
                 if (now > 0) {
                     now --;
                 } else {
-                    now = len-1;
+                    now = len/2-1;  // 调整到中间上一张的，也就是最后一张的位置
+                    ul.style.left = -(li_w * (len/2)) + 'px';  // 
                 }
                 scroll();
             }
@@ -125,8 +165,8 @@
                 if (now < len - 1) {
                     now++;
                 } else {
-                    now = len/2;  //调到中间上一张的位置
-                    ul.style.left = -(li_w * (len/2 - 1)) + 'px';  // 第二轮第一张滚动，看起来就是从最后一张到第一张滚动
+                    now = len/2;  //调到中间下一张的位置
+                    ul.style.left = -(li_w * (len/2 - 1)) + 'px';  // 从第一轮最后一张滚动到第二轮第一张，看起来就像是最后一张滚动到第一张一样
                 }
                 scroll();
             }
@@ -143,10 +183,10 @@
             //     icon[now].classList.add('active');
             // }
 
-            box.onmouseover = function(e) {
+            main.onmouseover = function(e) {
                 clearInterval(timer);
             }
-            box.onmouseout = function(e) {
+            main.onmouseout = function(e) {
                 timer = setInterval(function() {
                     next.onclick();
                 }, 3000)
