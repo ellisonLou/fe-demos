@@ -8,24 +8,30 @@
     <title>图片轮播效果</title>
     
     <style>
+        /* 这里设置main为了确定位置居中 */
+        /* 1. 为了包裹图片 */
+        /* 2. 为了包裹图片 */
         .main {
-            width: 650px;
-            height: 266px;
+            width: 650px; /* 1 */
+            height: 266px; /* 2 */
             margin: 50px auto 0;
             background-color: white;   
         }
+        /* banner为了hover的事件准备 */
+        /* 1. ul设置absolute */
         .banner {
             width: 650px;
             height: 266px;
-            position: relative;
+            position: relative; /* 1 */
         }
+        /* 1. 左边的按钮区域 */
         ul > .li-left {
             display: block;
-            float: left;
+            float: left; /* 1 */
         }
         li a img {
-            width: 650px;
-            height: 266px;
+            width: 650px; /* 图片的宽度 */
+            height: 266px;  /* 图片的高度 */
         }
         #box {
             width: 650px;
@@ -34,10 +40,10 @@
             position: relative;
         }
         .cast {
-            position: absolute;
+            position: absolute; /* 为了使用left进行移动 */
             top: 0px;
             left: 0px;
-            width: 5200px;
+            width: 5200px; /* 并列显示8张图片的宽度 */
         }
         .carousel-control {
             position: absolute;
@@ -50,20 +56,20 @@
             background-color: rgba(0 0 0 0);
         }
         .carousel-container-left, .carousel-container-right {
-            width: 10%;
-            opacity: 0;
-            transition: .3s;
+            width: 10%;  /* 左边可以点击区域的宽度 */
+            opacity: 0;  /* 初始状态箭头不显示 */
+            transition: .3s;  /* 箭头显示的过程 */
         }
         .carousel-container-right.right {
-            right: 0;
+            right: 0;  /* 右边可以点击区域的定位 */
             left: auto;
         }
         .carousel-container-left.left .arrow-left {
             display: inline-block;
             width: 20px;
             height: 40px;
-            background: url('./src/arrow-left.png') no-repeat center center;
-            background-size: 20px 40px;
+            background: url('./src/arrow-left.png') no-repeat center center;  /* 左右的箭头使用background-url */
+            background-size: 20px 40px; /* 和这块区域的大小一致 */
         }
         .carousel-container-right.right .arrow-right {
             display: inline-block;
@@ -74,8 +80,8 @@
         }
         .chevron-left {
             margin-left: -10px;
-            transform: translateX(-42px);
-            transition: .3s;
+            transform: translateX(-42px);  /* 首先让箭头显示在图片区域以外 */
+            transition: .3s;  /* hover显示中间过度 */
         }
         .chevron-right {
             margin-left: -10px;
@@ -84,7 +90,7 @@
         }
         .chevron-left, .chevron-right {
             position: absolute;
-            top: 50%;
+            top: 50%;  /* 使用top: 50% 和 margin-top: -10px将箭头垂直居中 */
             z-index: 5;
             margin-top: -10px;
         }
@@ -92,12 +98,30 @@
             cursor: pointer;
         }
         .banner:hover a.carousel-container-right, .banner:hover a.carousel-container-left {
-            opacity: 1;
+            opacity: 1;  /* banner hover让箭头显示出来 */
             transition: opacity 0.3;
         }
         .banner:hover .chevron-left, .banner:hover .chevron-right {
-            transform: translateX(0);
-            transition: .5s;
+            transform: translateX(0);  /* 箭头回到原位 */
+            transition: .5s;  /* 箭头回到原位动画 */
+        }
+        ol.indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            margin-left: -80px;
+        }
+        .icon {
+            width: 20px;
+            height: 2px;
+            background-color: #999;
+            display: block;
+            float: left;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        ol .icon.active {
+            background-color: #333;
         }
 
     </style>
@@ -123,6 +147,12 @@
             <a href="#" id="next" class="right carousel-container-right carousel-control">
                 <span class="arrow-right chevron-right"></span>
             </a>
+            <ol class="clear-fix indicator">
+                <li class="icon active"></li>
+                <li class="icon"></li>
+                <li class="icon"></li>
+                <li class="icon"></li>
+            </ol>
         </div>
     </div>
     <script>
@@ -132,21 +162,21 @@
                     return document.querySelector(o);
                 }
             }
-            var li = document.getElementsByTagName('li'),
+            var li = document.getElementsByClassName('li-left'),
                 ul = document.getElementById('cast');
                 img = document.getElementsByTagName('img'),
                 prev = document.getElementById('prev')
                 next = document.getElementById('next');
-                // icon = util.$('.icon');
+                icon = document.getElementsByClassName('icon');
                 main = document.getElementById('main');
                 len = li.length,
                 li_w = 0;
                 now = 0;
             img[0].onload = function(e) {
-                li_w = this.offsetWidth;
+                li_w = this.offsetWidth;  // 获取img的宽度
             }
 
-            var timer = setInterval(function() {
+            var timer = setInterval(function() {  // 设置图片可以自动滚动
                 next.onclick();
             }, 3000)
 
@@ -173,20 +203,20 @@
 
             function scroll() {
                 act(ul, 'left', now*(-li_w));
-                // iconScroll();
+                iconScroll();
             }
 
-            // function iconScroll() {
-            //     for(var i=0; i<icon.length; i++) {
-            //         icon[i].classList.remove('active');
-            //     }
-            //     icon[now].classList.add('active');
-            // }
+            function iconScroll() {
+                for(var i=0; i<icon.length; i++) {
+                    icon[i].classList.remove('active');  // 去除所有icon的样式
+                }
+                icon[now%4].classList.add('active'); 
+            }
 
-            main.onmouseover = function(e) {
+            main.onmouseover = function(e) {  // 当鼠标hover,自动滚动停止
                 clearInterval(timer);
             }
-            main.onmouseout = function(e) {
+            main.onmouseout = function(e) {  // 鼠标离开，自动滚动重新开始
                 timer = setInterval(function() {
                     next.onclick();
                 }, 3000)
@@ -200,7 +230,7 @@
                 }
             }
 
-            function act(obj, attr, target, fn) {
+            function act(obj, attr, target, fn) {  // 移动所需要的动画
                 obj.timer && clearInterval(obj.timer);
                 obj.timer = setInterval(function(){
                     var stop = true;
