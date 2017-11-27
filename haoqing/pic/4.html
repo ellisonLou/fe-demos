@@ -4,14 +4,182 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../reset.css">
     <title>全部商品分类</title>
+    <style>
+
+        .header {
+            height: 130px;
+            width: auto;
+            position: relative;
+            min-width: 990px;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+        .content {
+            position: relative;
+            margin: auto;
+            width: 100%;
+        }
+        .category-con {
+            height: 500px;
+            width: 100%;
+            position: relative;
+        }
+        .category-con .category-type {
+            width: 200px;
+            float: left;
+            height: 36px;
+            background-color: #FF0036;
+            position: absolute;
+            z-index: 100;
+            margin-top: -36px;
+            line-height: 36px;
+            color: white;
+        }
+        .logo {
+            height: 130px;
+            width: 290px;
+            position: absolute;
+            z-index: 100000;
+            margin-top: -167px;
+            margin-left: -45px;
+        }
+        .category-tab-content {
+            width: 200px;
+            height: 0;
+        }
+        .tab-content {
+            background-color: rgba(0, 0, 0, 0.55);
+            width: 200px;
+            height: 500px;
+            position: relative;
+        }
+        .clear-fix {
+            clear: both;
+        }
+        .item {
+            color: white !important;
+            padding: 7px;
+        }
+        .item:hover {
+            background-color: white;
+            color: rgba(66, 125, 239);
+        }
+        .real-content {
+            z-index: 9999;
+            position: absolute;
+            left: 200px;
+            top: 0;
+            width: 500px;
+            height: 500px;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+        .tab-content a {
+            text-decoration: none;
+            /* color: white; */
+        }
+    </style>
 </head>
 <body>
     <div class="main">
         <div class="site-nav"></div>
         <div class="header"></div>
-        <div class="content"></div>
-        
+        <div class="content">
+            <div class="main-nav"></div>
+            <div class="category category-con">
+                <div class="category-inner-con">
+                    <div class="logo">
+                        <img src="./src/tmall.png" alt="天猫">
+                    </div>
+                    <div class="category-type">
+                        <span>商品分类</span>
+                    </div>
+                    <div class="category-tab-content">
+                        <ul class="tab-content"></ul>
+                        <div class="real-content"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+    
+    <script>
+        (function() {
+            var ul = document.querySelector('.tab-content');
+            var data = [
+                {
+                    tab: ['女装', '内衣'],
+                    content: [
+                        {
+                            key: '当季流行',
+                            value: ['冬季新品', '商场同款', '毛呢大衣', '毛针织衫', '裤子', '气质连衣裙', '无痕文胸', '运动文胸', '潮流家居服', '百搭船袜']
+                        },
+                        {
+                            key: '精选上装',
+                            value: ['毛呢外套', '羽绒服', '棉服', '羽绒卫衣', '毛针织衫', '皮毛一体', '皮草', '毛衣', '衬衫', '卫衣', '针织衫', 'T恤', '短外套', '小西装', '风衣']
+                        },
+                        {
+                            key: '浪漫裙装',
+                            value: ['连衣裙', '半身裙', 'A字裙', '荷叶边裙', '大摆裙', '包臀裙', '百褶裙', '长袖连衣裙', '棉麻连衣裙', '牛仔裙', '蕾丝连衣裙', '真丝连衣裙', '印花连衣裙']
+                        }
+                    ]
+                },
+                {
+                    tab: ['女鞋', '男鞋', '箱包'],
+                    content: [
+                        {
+                            key: '当季流行',
+                            value: ['秋冬新品', '商场同款', '时尚羽绒', '修身夹克', '潮流卫衣', '牛仔衬衫', '保暖棉服', '温暖的针织衫', '修身西服', '秋冬风衣', '束脚裤', '九分裤', '破洞牛仔裤']
+                        },
+                        {
+                            key: '男士外套',
+                            value: ['夹克', '单西棒球服','棉衣', '毛呢大衣风衣', '西服', '套装羽绒服', '皮衣', '运动服', '工装外套', '针织开衫', '马甲']
+                        }
+                    ]
+                }
+            ]
+            function render() {
+                var title = "";
+                for(var i=0; i<data.length; i++) {
+                    title += "<li class='item'>";
+                    var content = '';
+                    for(var j=0; j<data[i].tab.length; j++) {
+                        title += "<a href='#'>" + data[i].tab[j] + "</a> / "
+                    }
+                    title += "</li>";
+                    // for(var k=0; k<data[i].content.length; j++) {
+                    //     content += ''
+                    // }
+                }
+                ul.innerHTML = title;
+            }
+            render();
+
+            var item = document.querySelectorAll('.item'),
+                realContent = document.querySelector('.real-content');
+            for(var i=0; i<item.length; i++) {
+                item[i].index = i;
+                item[i].onmouseenter = function(e) {
+                    renderContent(this.index);
+                    realContent.style.display = 'block';
+                }
+                item[i].onmouseleave = function(e){
+                    realContent.style.display = 'none';
+                }
+            }
+
+            function renderContent(index) {
+                var content = "<div>";
+                for (var i=0; i<data[index].content.length; i++) {
+                    content += "<div>" + data[index].content[i].key + data[index].content[i].value + "</div>";
+                }
+                content += "</div>"
+                realContent.innerHTML = content;
+            }
+        })()
+    </script>
 </body>
 </html>
