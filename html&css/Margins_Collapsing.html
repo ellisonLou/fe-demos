@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            border: 5px dotted rgb(214, 129, 137);
+            border-radius: 5px;
+            width: 450px;
+            height: 20px;
+            margin-bottom: 40px;
+            margin-top: 20px;
+        }
+
+        .overflow {
+            overflow: auto;
+        }
+
+        .box-outer {
+            width: 200px;
+            margin: 40px;
+            overflow: hidden;
+            background-color: grey;
+        }
+
+        .box-inner {
+            width: 120px;
+            margin: 20px;
+            background-color: bisque;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 解决外边距叠加的问题 -->
+    <h1>box1的margin-bottom和box2的margin-top叠加了</h1>
+
+    <div>
+        <div class="box-outer">
+            <p class="box-inner">hello</p>
+        </div>
+
+    </div>
+
+    <h1>使用BFC解决这个问题</h1>
+    <div class="box"></div>
+    <div class="box overflow"></div>
+</body>
+
+</html>
