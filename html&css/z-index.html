@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .b1 {
+            position: relative;
+        }
+        .box1 {
+            z-index: 100;
+            background-color: bisque;
+            width: 300px;
+            height: 300px;
+        }
+
+        .box2 {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            z-index: 10;
+            background-color: brown;
+            width: 100px;
+            height: 100px;
+        }
+        .box3 {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            background-color: aliceblue;
+        }
+        .box4 {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            top: -40px;
+            background-color: bisque;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>对没有position的dom元素来说，z-index属性没有用。absolute会直接覆盖static定位的z-index</h2>
+    <div class="b1">
+        <div class="box1">
+            This is box1, with z-index: 100
+        </div>
+        <div class="box2">
+            This is box2, with position: absolute and z-index: 10
+        </div>
+    </div>
+
+    <h2>如果没有申明z-index,后面的直接覆盖前面的</h2>
+    <div style="position: relative">
+        <div class="box3">
+            This is box3, with position: relative
+        </div>
+        <div class="box4">
+            This is box4, with position: relative
+        </div>
+    </div>
+
+
+</body>
+
+</html>
